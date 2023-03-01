@@ -33,7 +33,9 @@ public class Robot extends TimedRobot {
   //private CANSparkMax sparkMax = new CANSparkMax(2, MotorType.kBrushed);
   private CANSparkMax sparkMaxR1 = new CANSparkMax(3, MotorType.kBrushed);
   private CANSparkMax sparkMaxR2 = new CANSparkMax(2, MotorType.kBrushed); 
-  
+  private CANSparkMax sparkMaxL1 = new CANSparkMax(4, MotorType.kBrushed);
+  private CANSparkMax sparkMaxL2 = new CANSparkMax(5, MotorType.kBrushed); 
+
   // CONTROLLER DECLARATION
   Joystick control = new Joystick(0);
 
@@ -42,7 +44,6 @@ public class Robot extends TimedRobot {
   //private MotorControllerGroup rightGroup = new MotorControllerGroup(sparkMaxR1, sparkMaxR2); 
   //private DifferentialDrive chasis = new DifferentialDrive(leftGroup, righGroup);
   
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -53,12 +54,22 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
+    // MOTOR CONFIGURATION
     sparkMaxR1.restoreFactoryDefaults();
     sparkMaxR1.setInverted(false);
     sparkMaxR1.setIdleMode(IdleMode.kCoast);
+
     sparkMaxR2.restoreFactoryDefaults();
     sparkMaxR2.setInverted(false);
     sparkMaxR2.setIdleMode(IdleMode.kCoast);  // kBrake - Freno
+
+    sparkMaxL1.restoreFactoryDefaults();
+    sparkMaxL1.setInverted(false);
+    sparkMaxL1.setIdleMode(IdleMode.kCoast);
+
+    sparkMaxL2.restoreFactoryDefaults();
+    sparkMaxL2.setInverted(false);
+    sparkMaxL2.setIdleMode(IdleMode.kCoast);
   }
 
   /**
@@ -109,21 +120,46 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //chasis
+    // CHASIS CONTROL
+    // FORWARD
     if (control.getRawButton(8))
     {
-      sparkMaxR1.set(0.3);
-      sparkMaxR2.set(0.3);
+      sparkMaxR1.set(0.2);
+      sparkMaxR2.set(0.2);
+      sparkMaxL1.set(-0.2);
+      sparkMaxL2.set(-0.2);
     }
+    // TURN LEFT
+    else if(control.getRawButton(5))
+    {
+      sparkMaxR1.set(0.2);
+      sparkMaxR2.set(0.2);
+      sparkMaxL1.set(0.2);
+      sparkMaxL2.set(0.2);
+    }
+    // TURN RIGHT
+    else if(control.getRawButton(6))
+    {
+      sparkMaxR1.set(-0.2);
+      sparkMaxR2.set(-0.2);
+      sparkMaxL1.set(-0.2);
+      sparkMaxL2.set(-0.2);
+    }
+    // REVERSE
     else if(control.getRawButton(7))
     {
-      sparkMaxR1.set(-0.3);
-      sparkMaxR2.set(-0.3);
+      sparkMaxR1.set(-0.2);
+      sparkMaxR2.set(-0.2);
+      sparkMaxL1.set(0.2);
+      sparkMaxL2.set(0.2);
     }
+    // STOP - NOTHING PRESS
     else 
     {
       sparkMaxR1.set(0);
       sparkMaxR2.set(0);
+      sparkMaxL1.set(0);
+      sparkMaxL2.set(0);
     }  
   }
 
