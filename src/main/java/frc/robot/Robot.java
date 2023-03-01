@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import javax.lang.model.util.ElementScanner14;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -21,18 +23,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
-public class Robot extends TimedRobot {
-  private CANSparkMax sparkMax = new CANSparkMax(2, MotorType.kBrushed);
+public class Robot extends TimedRobot { 
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  /* 
-  private MotorControllerGroup leftGroup = new MotorControllerGroup(sparkMaxL1, sparkMaxL2); 
-  private MotorControllerGroup rightGroup = new MotorControllerGroup(sparkMaxR1, sparkMaxR2); 
-  private DifferentialDrive chasis = new DifferentialDrive(leftGroup, righGroup);
-  */
+
+  // INDIVIDUAL MOTOR DECLARATION
+  //private CANSparkMax sparkMax = new CANSparkMax(2, MotorType.kBrushed);
+  private CANSparkMax sparkMaxR1 = new CANSparkMax(3, MotorType.kBrushed);
+  private CANSparkMax sparkMaxR2 = new CANSparkMax(2, MotorType.kBrushed); 
+  
+  // CONTROLLER DECLARATION
   Joystick control = new Joystick(0);
+
+  // MOTOR GROUP DECLARATION
+  //private MotorControllerGroup leftGroup = new MotorControllerGroup(sparkMaxL1, sparkMaxL2); 
+  //private MotorControllerGroup rightGroup = new MotorControllerGroup(sparkMaxR1, sparkMaxR2); 
+  //private DifferentialDrive chasis = new DifferentialDrive(leftGroup, righGroup);
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,12 +49,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    sparkMax.restoreFactoryDefaults();
-    sparkMax.setInverted(false);
-    sparkMax.setIdleMode(IdleMode.kCoast);  // kBrake - Freno
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    sparkMaxR1.restoreFactoryDefaults();
+    sparkMaxR1.setInverted(false);
+    sparkMaxR1.setIdleMode(IdleMode.kCoast);
+    sparkMaxR2.restoreFactoryDefaults();
+    sparkMaxR2.setInverted(false);
+    sparkMaxR2.setIdleMode(IdleMode.kCoast);  // kBrake - Freno
   }
 
   /**
@@ -97,12 +110,21 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //chasis
-    if (control.getRawButton(2)){
-      sparkMax.set(0.3);
+    if (control.getRawButton(8))
+    {
+      sparkMaxR1.set(0.3);
+      sparkMaxR2.set(0.3);
     }
-    else{
-      sparkMax.set(0);
+    else if(control.getRawButton(7))
+    {
+      sparkMaxR1.set(-0.3);
+      sparkMaxR2.set(-0.3);
     }
+    else 
+    {
+      sparkMaxR1.set(0);
+      sparkMaxR2.set(0);
+    }  
   }
 
   /** This function is called once when the robot is disabled. */
