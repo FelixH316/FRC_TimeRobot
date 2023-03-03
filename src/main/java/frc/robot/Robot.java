@@ -120,38 +120,39 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+    double speedy = 0.5000;
     // CHASIS CONTROL
     // FORWARD
     if (control.getRawButton(8))
     {
-      sparkMaxR1.set(0.2);
-      sparkMaxR2.set(0.2);
-      sparkMaxL1.set(-0.2);
-      sparkMaxL2.set(-0.2);
+      sparkMaxR1.set(speedy);
+      sparkMaxR2.set(speedy);
+      sparkMaxL1.set(-speedy);
+      sparkMaxL2.set(-speedy);
     }
     // TURN LEFT
     else if(control.getRawButton(5))
     {
-      sparkMaxR1.set(0.2);
-      sparkMaxR2.set(0.2);
-      sparkMaxL1.set(0.2);
-      sparkMaxL2.set(0.2);
+      sparkMaxR1.set(speedy);
+      sparkMaxR2.set(speedy);
+      sparkMaxL1.set(speedy);
+      sparkMaxL2.set(speedy);
     }
     // TURN RIGHT
     else if(control.getRawButton(6))
     {
-      sparkMaxR1.set(-0.2);
-      sparkMaxR2.set(-0.2);
-      sparkMaxL1.set(-0.2);
-      sparkMaxL2.set(-0.2);
+      sparkMaxR1.set(-speedy);
+      sparkMaxR2.set(-speedy);
+      sparkMaxL1.set(-speedy);
+      sparkMaxL2.set(-speedy);
     }
     // REVERSE
     else if(control.getRawButton(7))
     {
-      sparkMaxR1.set(-0.2);
-      sparkMaxR2.set(-0.2);
-      sparkMaxL1.set(0.2);
-      sparkMaxL2.set(0.2);
+      sparkMaxR1.set(-speedy);
+      sparkMaxR2.set(-speedy);
+      sparkMaxL1.set(speedy);
+      sparkMaxL2.set(speedy);
     }
     // STOP - NOTHING PRESS
     else 
